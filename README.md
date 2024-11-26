@@ -1,46 +1,74 @@
-# hire wire
-It's for the best developers walking the "high wire" to prove their skills in a hiring challenge!
+# Sistema de Contas Bancárias - Code Test
 
-# Especificação Técnica: Sistema de Contas Bancárias para code teste
+Este sistema foi desenvolvido para avaliar as habilidades de desenvolvimento dos candidatos por meio de um desafio prático. A aplicação permite a criação e o gerenciamento de três tipos de contas bancárias: **Conta Poupança**, **Conta Corrente** e **Conta Investimentos**. O sistema inclui um backend em **Laravel** e um frontend em **Vue.js**, com autenticação implementada via **Laravel Passport**.
 
-Este sistema permitirá aos usuários criar e gerenciar três tipos de contas bancárias: Conta Poupança, Conta Corrente e Conta Investimentos. A aplicação será composta por um backend desenvolvido em Laravel e um frontend em Vue.js, com autenticação via Laravel Passport.
+---
 
-Funcionalidades Gerais
+## 🚀 Funcionalidades Gerais
 
-# 1.	Cadastro de Usuário
-o	O sistema permitirá que os usuários se cadastrem fornecendo:
-	Nome
-	CPF (único)
-	E-mail (único)
-	Senha
-o	Validação para garantir que não existam CPFs ou e-mails duplicados.
-# 2.	Tipos de Contas
-o	Conta Poupança
-o	Conta Corrente
-o	Conta Investimentos
-# 3.	Operações Disponíveis
-o	Depósito: Adicionar valores ao saldo de uma conta específica.
-o	Consulta de Saldo: Consultar o saldo atual de qualquer conta do usuário.
-o	Correção Monetária: Aplicada mensalmente conforme as regras de cada tipo de conta.
-4.	Autenticação e Controle de Acesso
-o	Apenas usuários autenticados podem acessar as operações de suas contas.
-o	Autenticação será feita via Laravel Passport com tokens de acesso OAuth2.
+### 1. Cadastro de Usuário
+- Os usuários podem se cadastrar fornecendo:
+  - **Nome**
+  - **CPF** (único)
+  - **E-mail** (único)
+  - **Senha**
+- O sistema valida para evitar duplicidade de **CPF** e **e-mail**.
 
-Regras de Negócio
-# 1.	Conta Poupança
-o	Depósito:
-	O valor depositado é adicionado diretamente ao saldo da conta.
-o	Correção Monetária:
-	0,001% do saldo é aplicado no final de cada mês.
-# 2.	Conta Corrente
-o	Depósito:
-	O valor depositado é incrementado de R$0,50 antes de ser adicionado ao saldo.
-	Exemplo: Depósito de R$100,00 → R$100,50 adicionados ao saldo.
-o	Correção Monetária:
-	0,1% do saldo é aplicado no final de cada mês.
-# 3.	Conta Investimentos
-o	Depósito:
-	O valor depositado é incrementado de R$0,50 antes de ser adicionado ao saldo.
-	Exemplo: Depósito de R$200,00 → R$200,50 adicionados ao saldo.
-o	Correção Monetária:
-	0,1% do saldo é aplicado no final de cada mês.
+### 2. Tipos de Contas
+- **Conta Poupança**
+- **Conta Corrente**
+- **Conta Investimentos**
+
+### 3. Operações Disponíveis
+- **Depósito**: Adicionar valores ao saldo de uma conta específica.
+- **Consulta de Saldo**: Visualizar o saldo atual de qualquer conta do usuário.
+- **Correção Monetária**: Aplicada mensalmente conforme as regras de cada tipo de conta.
+
+### 4. Autenticação e Controle de Acesso
+- Apenas usuários autenticados podem acessar as operações de suas contas.
+- A autenticação é realizada via **Laravel Passport** com tokens de acesso OAuth2.
+
+---
+
+## 📜 Regras de Negócio
+
+### 1. Conta Poupança
+- **Depósito**:
+  - O valor depositado é adicionado diretamente ao saldo da conta.
+- **Correção Monetária**:
+  - 0,001% do saldo é aplicado no final de cada mês.
+
+### 2. Conta Corrente
+- **Depósito**:
+  - O valor depositado recebe um incremento de **R$0,50** antes de ser adicionado ao saldo.
+  - **Exemplo**: Um depósito de **R$100,00** resulta em **R$100,50** adicionados ao saldo.
+- **Correção Monetária**:
+  - 0,1% do saldo é aplicado no final de cada mês.
+
+### 3. Conta Investimentos
+- **Depósito**:
+  - O valor depositado recebe um incremento de **R$0,50** antes de ser adicionado ao saldo.
+  - **Exemplo**: Um depósito de **R$200,00** resulta em **R$200,50** adicionados ao saldo.
+- **Correção Monetária**:
+  - 0,1% do saldo é aplicado no final de cada mês.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+- **Backend**: Laravel
+- **Frontend**: Vue.js
+- **Autenticação**: Laravel Passport (OAuth2)
+
+---
+
+## 🏁 Como Usar
+1. Clone este repositório.
+2. Configure o backend em Laravel e o frontend em Vue.js.
+3. Configure o Laravel Passport para autenticação.
+4. Execute os comandos de migração para configurar o banco de dados.
+5. Inicie o servidor backend e frontend para acessar o sistema.
+
+---
+
+## 📢 Observações
+Este sistema é uma simulação para o teste técnico de contratação e visa avaliar suas habilidades em backend, frontend, e lógica de negócios.
