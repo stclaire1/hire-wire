@@ -1,4 +1,4 @@
-# hire-wire
+# hire wire
 It's for the best developers walking the "high wire" to prove their skills in a hiring challenge!
 
 # Especificação Técnica: Sistema de Contas Bancárias para code teste
