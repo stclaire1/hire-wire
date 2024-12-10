@@ -61,6 +61,9 @@ Este sistema foi desenvolvido para avaliar as habilidades de desenvolvimento dos
 
 ---
 
+## 😁 Sobre suas habilidades
+Este code test não foi feito para avaliar o quão bem você conhece PHP, mas sim para explorar suas habilidades com Laravel e, acima de tudo, seu domínio em programação orientada a objetos no **modo hard**. Prepare-se para brilhar! 😎
+
 ## 🏁 Como Usar
 1. Clone este repositório.
 2. Configure o backend em Laravel e o frontend em Vue.js.
