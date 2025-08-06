@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-// Configure axios base URL
+// configure axios base url
 const API_URL = 'http://localhost:8000/api'
 
 axios.defaults.baseURL = API_URL
 axios.defaults.headers.common['Accept'] = 'application/json'
 axios.defaults.headers.common['Content-Type'] = 'application/json'
 
-// Add a request interceptor to include auth token
+// add request interceptor to include auth token
 axios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('auth_token')
@@ -21,22 +21,20 @@ axios.interceptors.request.use(
   }
 )
 
-// Add a response interceptor to handle token expiration
+// add response interceptor to handle token expiration
 axios.interceptors.response.use(
   (response) => {
     return response
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Only redirect if we're not already on login/register pages and have a stored token
+      // redirects only if user is not on login/register and has a token
       const currentPath = window.location.pathname
       const hasToken = localStorage.getItem('auth_token')
       
       localStorage.removeItem('auth_token')
       localStorage.removeItem('user')
-      
-      // Only redirect if we have a token (meaning user was previously authenticated)
-      // and we're not already on authentication pages
+ 
       if (hasToken && !currentPath.includes('/login') && !currentPath.includes('/register')) {
         window.location.href = '/login'
       }
@@ -118,15 +116,6 @@ class AuthService {
     } finally {
       localStorage.removeItem('auth_token')
       localStorage.removeItem('user')
-    }
-  }
-
-  async getUser(): Promise<User | null> {
-    try {
-      const response = await axios.get('/user')
-      return response.data.data.user
-    } catch (error) {
-      return null
     }
   }
 
