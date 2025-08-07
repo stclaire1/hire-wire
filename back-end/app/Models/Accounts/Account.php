@@ -11,12 +11,21 @@ abstract class Account extends Model
 {
     use HasFactory;
 
+    // specify the table name (all accounts will be stored in the same table with a column to differentiate the type)
+    protected $table = 'accounts';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['balance', 'user_id'];
+    protected $fillable = [
+        'user_id', 
+        'account_number', 
+        'agency_number', 
+        'account_type', 
+        'balance'
+    ];
 
     /**
      *

@@ -12,6 +12,9 @@ class CheckingAccount extends Account
     use HasEqualCorrection;
     use HasDepositBonus;
 
+    // uses the "accounts" table but the column "account_type" value is "checking"
+    protected $table = 'accounts';
+
     // make a deposit and apply a bonus
     public function deposit(float $amount): float
     {

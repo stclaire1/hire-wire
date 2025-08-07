@@ -8,6 +8,9 @@ class SavingsAccount extends Account
 {
     use HasFactory;
 
+    // uses the "accounts" table but the column "account_type" value is "savings"
+    protected $table = 'accounts';
+
     // make a deposit without applying a bonus
     public function deposit(float $amount): float
     {
