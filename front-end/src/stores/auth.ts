@@ -8,8 +8,9 @@ export const useAuthStore = defineStore('auth', () => {
   const error = ref<string | null>(null)
 
   const isAuthenticated = computed(() => !!user.value)
-
-  // initialize user from localStorage
+  /**
+   * initialize user from localStorage
+   */
   const initAuth = () => {
     const storedUser = authService.getStoredUser()
     if (storedUser && authService.isAuthenticated()) {
