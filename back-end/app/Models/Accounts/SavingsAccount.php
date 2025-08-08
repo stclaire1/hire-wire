@@ -49,6 +49,6 @@ class SavingsAccount extends Account
     // return the minimum accepted deposit amount
     public function getMinDepositAmount(): float
     {
-        return 1.00;
+        return 5.00;
     }
 }
