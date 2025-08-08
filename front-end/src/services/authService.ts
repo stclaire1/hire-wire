@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// configure axios base url
-const API_URL = 'http://localhost:8000/api'
+// configure axios base url from environment variable
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 
 axios.defaults.baseURL = API_URL
 axios.defaults.headers.common['Accept'] = 'application/json'

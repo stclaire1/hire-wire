@@ -9,7 +9,6 @@ export const useAccountStore = defineStore('account', () => {
   const error = ref<string | null>(null)
 
   const hasAccounts = computed(() => accounts.value?.length > 0)
-  const activeAccounts = computed(() => accounts.value?.filter(account => account && account.is_active === true) ?? [])
 
   const fetchAccounts = async () => {
     loading.value = true
@@ -19,15 +18,8 @@ export const useAccountStore = defineStore('account', () => {
       const response = await accountService.getAccounts()
       
       if (response.success && response.data) {
-        // the accounts are directly in response.data
-        const accountsArray = Array.isArray(response.data) ? response.data : (response.data.accounts || [])
-        
-        accounts.value = accountsArray.map(account => ({
-          ...account,
-          is_active: account.is_active ?? true // default to true if not provided by API
-        }))
-
-        // clear any previous errors on successful fetch
+        // the accounts are directly in response.data as Array
+        accounts.value = response.data
         error.value = null
       } else {
         error.value = response.message || 'Erro ao carregar contas'
@@ -82,7 +74,6 @@ export const useAccountStore = defineStore('account', () => {
     loading,
     error,
     hasAccounts,
-    activeAccounts,
     fetchAccounts,
     createAccount,
     clearError,
