@@ -33,14 +33,16 @@
       <div v-else-if="!accountsLoading" class="space-y-6">
         <!-- accounts list -->
         <div v-if="hasAccounts" class="bg-white rounded-lg shadow-lg p-6">
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">Suas Contas</h2>
+          <h2 class="text-xl font-semibold text-gray-900 mb-2">Suas Contas</h2>
+          <p class="text-gray-600 text-sm mb-4">Clique em uma conta para ver detalhes e realizar transações</p>
           <div class="space-y-3">
-            <div 
-              v-for="account in activeAccounts" 
+            <div
+              v-for="account in accounts"
               :key="account.id"
-              class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
+              @click="goToAccountDetail(account.id)"
+              class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 hover:border-blue-300 transition-all cursor-pointer"
             >
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-start w-full">
                 <div class="flex items-center space-x-3">
                   <div class="flex-shrink-0">
                     <div :class="getAccountIconClass(account.account_type)" class="h-10 w-10 rounded-full flex items-center justify-center">
@@ -53,14 +55,21 @@
                     <p class="text-sm text-gray-600">{{ account.account_number }}</p>
                   </div>
                 </div>
-                <div class="text-right">
-                  <p class="font-semibold text-gray-900">
-                    R$ {{ formatCurrency(account.balance) }}
-                  </p>
-                  <!-- make this dynamic -->
-                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    Ativa
-                  </span>
+                <div class="flex items-center space-x-4">
+                  <div class="text-right">
+                    <p class="font-semibold text-gray-900">
+                      R$ {{ formatCurrency(account.balance) }}
+                    </p>
+                    <!-- make this dynamic -->
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      Ativa
+                    </span>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
@@ -118,6 +127,7 @@ import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useAccountStore } from '@/stores/account'
+import { getAccountTypeName, getAccountIconClass, formatCurrency } from '@/utils/accountUtils'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -136,7 +146,7 @@ const accountError = computed(() => {
   return error
 })
 const hasAccounts = computed(() => accountStore.hasAccounts)
-const activeAccounts = computed(() => accountStore.activeAccounts)
+const accounts = computed(() => accountStore.accounts)
 
 onMounted(async () => {
   // redirect if not authenticated
@@ -165,28 +175,7 @@ const goToCreateAccount = () => {
   router.push('/create-account')
 }
 
-const formatCurrency = (value: number): string => {
-  return new Intl.NumberFormat('pt-BR', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(value)
-}
-
-const getAccountTypeName = (type: 'checking' | 'savings' | 'investment'): string => {
-  const typeNames = {
-    checking: 'Corrente',
-    savings: 'Poupança',
-    investment: 'Investimento'
-  }
-  return typeNames[type]
-}
-
-const getAccountIconClass = (type: 'checking' | 'savings' | 'investment'): string => {
-  const iconClasses = {
-    checking: 'bg-blue-100 text-blue-600',
-    savings: 'bg-green-100 text-green-600',
-    investment: 'bg-purple-100 text-purple-600'
-  }
-  return iconClasses[type]
+const goToAccountDetail = (accountId: number) => {
+  router.push(`/account/${accountId}`)
 }
 </script>

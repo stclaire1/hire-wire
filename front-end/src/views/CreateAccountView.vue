@@ -76,7 +76,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAccountStore } from '@/stores/account'
-import { validateCreateAccountData } from '@/services/accountUtils'
+import { validateCreateAccountData } from '@/utils/accountUtils'
 import { ACCOUNT_TYPE_LABELS } from '@/types'
 import type { Account, CreateAccountData } from '@/types'
 
