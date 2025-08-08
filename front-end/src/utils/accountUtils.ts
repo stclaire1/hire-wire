@@ -2,7 +2,7 @@ import type { Account, AccountValidation, CreateAccountData } from '@/types'
 import { ACCOUNT_DEPOSIT_LIMITS, getMinDepositAmount, getMaxDepositAmount } from '@/types'
 
 /**
- * tet the display name for an account type in pt-br
+ * get the display name for an account type in pt-br
  */
 export const getAccountTypeName = (type: Account['account_type']): string => {
   const typeNames = {
@@ -146,7 +146,7 @@ export const sortAccountsByDate = (accounts: Account[]): Account[] => {
 }
 
 /**
- * calculate total balance across all accounts
+ * total balance across all accounts
  */
 export const calculateTotalBalance = (accounts: Account[]): number => {
   return accounts

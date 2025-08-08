@@ -394,4 +394,17 @@ const getTransactionAmountClass = (type: string): string => {
   }
   return amountClasses[type as keyof typeof amountClasses] || 'text-gray-600'
 }
+
+// deposit bonus functions
+const hasDepositBonus = (accountType: Account['account_type']): boolean => {
+  return accountType === 'checking' || accountType === 'investment'
+}
+
+const getDepositBonus = (): number => {
+  return 0.50
+}
+
+const shouldShowDepositBonus = (transaction: Transaction, accountType: Account['account_type']): boolean => {
+  return transaction.transaction_type === 'deposit' && hasDepositBonus(accountType)
+}
 </script>
