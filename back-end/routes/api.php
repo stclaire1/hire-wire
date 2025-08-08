@@ -19,5 +19,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/accounts', [AccountController::class, 'store']);
     Route::get('/accounts/{id}', [AccountController::class, 'show']);
     Route::get('/accounts/{id}/balance', [AccountController::class, 'balance']);
-    // Route::post('/accounts/{id}/deposit', [AccountController::class, 'deposit']);
+    Route::post('/accounts/{id}/deposit', [AccountController::class, 'deposit']);
+    Route::get('/accounts/{id}/transactions', [AccountController::class, 'transactions']);
 });

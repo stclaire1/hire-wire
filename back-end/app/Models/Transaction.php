@@ -28,7 +28,48 @@ class Transaction extends Model
      */
     protected $casts = [
         'amount' => 'float',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
+
+    /**
+     * The attributes that should be appended to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'formatted_amount',
+        'formatted_date',
+        'transaction_description'
+    ];
+
+    /**
+     * Get the formatted amount attribute.
+     */
+    public function getFormattedAmountAttribute(): string
+    {
+        return 'R$ ' . number_format($this->amount, 2, ',', '.');
+    }
+
+    /**
+     * Get the formatted date attribute.
+     */
+    public function getFormattedDateAttribute(): string
+    {
+        return $this->created_at->format('d/m/Y H:i:s');
+    }
+
+    /**
+     * Get the transaction description attribute.
+     */
+    public function getTransactionDescriptionAttribute(): string
+    {
+        return match($this->transaction_type) {
+            'deposit' => 'Depósito',
+            'monthly_correction' => 'Correção Mensal',
+            default => 'Transação'
+        };
+    }
 
     /**
      *

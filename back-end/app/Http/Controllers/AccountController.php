@@ -116,4 +116,23 @@ class AccountController extends Controller
             ], 404);
         }
     }
+
+    public function transactions(string $id): JsonResponse
+    {
+        try {
+            $userId = Auth::id();
+            $transactions = $this->accountService->getAccountTransactions($id, $userId);
+
+            return response()->json([
+                'success' => true,
+                'data' => $transactions->toArray(),
+                'message' => 'Histórico de transações recuperado com sucesso'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 404);
+        }
+    }
 }
