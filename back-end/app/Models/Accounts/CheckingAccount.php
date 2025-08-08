@@ -48,6 +48,6 @@ class CheckingAccount extends Account
     // return the minimum accepted deposit amount
     public function getMinDepositAmount(): float
     {
-        return 5.00;
+        return 10.00;
     }
 }
