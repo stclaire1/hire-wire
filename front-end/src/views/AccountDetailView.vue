@@ -5,7 +5,7 @@
       <div class="mb-6">
         <button
           @click="goBack"
-          class="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+          class="cursor-pointer flex items-center text-gray-600 hover:text-gray-900 transition-colors"
         >
           <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -69,7 +69,7 @@
           <h2 class="text-lg font-semibold text-gray-900 mb-4">Transações</h2>
           <button
             @click="showDepositForm = true"
-            class="w-full flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-medium"
+            class="cursor-pointer w-full flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-medium"
           >
             <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -84,7 +84,7 @@
             <h3 class="text-lg font-semibold text-gray-900">Realizar Depósito</h3>
             <button
               @click="cancelDeposit"
-              class="text-gray-400 hover:text-gray-600"
+              class="cursor-pointer text-gray-400 hover:text-gray-600"
             >
               <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -137,14 +137,14 @@
               <button
                 type="button"
                 @click="cancelDeposit"
-                class="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+                class="cursor-pointer flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 :disabled="!isDepositValid || depositLoading"
-                class="flex-1 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+                class="cursor-pointer flex-1 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
               >
                 <div v-if="depositLoading" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                 {{ depositLoading ? 'Depositando...' : 'Confirmar Depósito' }}
@@ -176,28 +176,40 @@
           
           <!-- transactions list -->
           <div v-else class="space-y-3">
-            <div 
-              v-for="transaction in transactions" 
+            <div
+              v-for="transaction in transactions"
               :key="transaction.id"
-              class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <div class="flex items-center space-x-3">
-                <div :class="getTransactionIconClass(transaction.transaction_type)" class="h-10 w-10 rounded-full flex items-center justify-center">
-                  <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path v-if="transaction.transaction_type === 'deposit'" d="M12 4v16m8-8H4"/>
-                    <path v-else-if="transaction.transaction_type === 'monthly_correction'" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    <path v-else d="M12 4v16m8-8H4"/>
-                  </svg>
-                </div>
-                <div>
-                  <p class="font-medium text-gray-900">{{ transaction.transaction_description }}</p>
-                  <p class="text-sm text-gray-500">{{ transaction.formatted_date }}</p>
-                </div>
+              <!-- deposit bonus indicator -->
+              <div
+                v-if="account && shouldShowDepositBonus(transaction, account.account_type)"
+                class="flex items-center justify-between px-4 py-1.5 mb-1 bg-green-50 border border-green-200 rounded-md text-sm"
+              >
+                <span class="text-green-700 font-medium">Adicional de depósito</span>
+                <span class="text-green-700 font-semibold">R$ {{ getDepositBonus().toFixed(2).replace('.', ',') }}</span>
               </div>
-              <div class="text-right">
-                <p :class="getTransactionAmountClass(transaction.transaction_type)" class="font-semibold">
-                  {{ transaction.formatted_amount }}
-                </p>
+
+              <div
+                class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <div class="flex items-center space-x-3">
+                  <div :class="getTransactionIconClass(transaction.transaction_type)" class="h-10 w-10 rounded-full flex items-center justify-center">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path v-if="transaction.transaction_type === 'deposit'" d="M12 4v16m8-8H4"/>
+                      <path v-else-if="transaction.transaction_type === 'monthly_correction'" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      <path v-else d="M12 4v16m8-8H4"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">{{ transaction.transaction_description }}</p>
+                    <p class="text-sm text-gray-500">{{ transaction.formatted_date }}</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p :class="getTransactionAmountClass(transaction.transaction_type)" class="font-semibold">
+                    {{ transaction.formatted_amount }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
