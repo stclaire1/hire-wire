@@ -83,16 +83,26 @@ class AccountService
     {
         return DB::transaction(function () use ($accountId, $userId, $amount) {
             $account = $this->getAccountById($accountId, $userId);
+            $depositBonus = $this->getDepositBonusForAccount($account);
             
             // perform the deposit (this will validate minimum amounts per account type)
             $newBalance = $account->deposit($amount);
             
-            // record the transaction
+            // record base deposit transaction
             Transaction::create([
                 'account_id' => $account->id,
                 'transaction_type' => 'deposit',
                 'amount' => $amount
             ]);
+
+            // record bonus as a dedicated transaction for traceability
+            if ($depositBonus > 0) {
+                Transaction::create([
+                    'account_id' => $account->id,
+                    'transaction_type' => 'deposit_revenue',
+                    'amount' => $depositBonus,
+                ]);
+            }
             
             return $newBalance;
         });
@@ -114,6 +124,7 @@ class AccountService
         
         return Transaction::where('account_id', $account->id)
             ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
     }
 
@@ -133,7 +144,7 @@ class AccountService
                 // calculate the correct balance based on transactions
                 $transactionSum = Transaction::where('account_id', $account->id)
                     ->selectRaw('
-                        SUM(CASE WHEN transaction_type = "deposit" THEN amount ELSE 0 END) -
+                        SUM(CASE WHEN transaction_type IN ("deposit", "deposit_revenue", "monthly_correction") THEN amount ELSE 0 END) -
                         SUM(CASE WHEN transaction_type = "withdrawal" THEN amount ELSE 0 END) as balance
                     ')
                     ->value('balance') ?? 0;
@@ -213,5 +224,10 @@ class AccountService
         return CheckingAccount::where('account_number', $accountNumber)->where('account_type', 'checking')->exists()
             || SavingsAccount::where('account_number', $accountNumber)->where('account_type', 'savings')->exists()
             || InvestmentAccount::where('account_number', $accountNumber)->where('account_type', 'investment')->exists();
+    }
+
+    private function getDepositBonusForAccount(Account $account): float
+    {
+        return method_exists($account, 'getDepositBonus') ? (float) $account->getDepositBonus() : 0.0;
     }
 }

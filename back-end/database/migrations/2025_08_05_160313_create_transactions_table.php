@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('account_id')
                 ->constrained('accounts')
                 ->onDelete('cascade');
-            $table->string('transaction_type'); // deposit or monthly correction
+            $table->string('transaction_type'); // deposit, monthly correction or deposit revenue
             $table->decimal('amount', 10, 2);
             $table->timestamps();
         });

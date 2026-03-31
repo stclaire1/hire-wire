@@ -66,6 +66,7 @@ class Transaction extends Model
     {
         return match($this->transaction_type) {
             'deposit' => 'Depósito',
+            'deposit_revenue' => 'Deposit Revenue',
             'monthly_correction' => 'Correção Mensal',
             default => 'Transação'
         };

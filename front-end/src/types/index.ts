@@ -12,7 +12,7 @@ export interface Account {
 export interface Transaction {
   id: number
   account_id: number
-  transaction_type: 'deposit' | 'monthly_correction'
+  transaction_type: 'deposit' | 'deposit_revenue' | 'monthly_correction'
   amount: number
   created_at: string
   updated_at: string

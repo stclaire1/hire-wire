@@ -182,14 +182,15 @@
             >
               <!-- deposit bonus indicator -->
               <div
-                v-if="account && shouldShowDepositBonus(transaction, account.account_type)"
-                class="flex items-center justify-between px-4 py-1.5 mb-1 bg-green-50 border border-green-200 rounded-md text-sm"
+                v-if="transaction.transaction_type === 'deposit_revenue'"
+                class="flex items-center justify-between px-4 py-1.5 bg-green-50 border border-green-200 rounded-md text-sm"
               >
                 <span class="text-green-700 font-medium">Adicional de depósito</span>
-                <span class="text-green-700 font-semibold">R$ {{ getDepositBonus().toFixed(2).replace('.', ',') }}</span>
+                <span class="text-green-700 font-semibold">{{ transaction.formatted_amount }}</span>
               </div>
 
               <div
+                v-else
                 class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div class="flex items-center space-x-3">
@@ -394,6 +395,7 @@ const handleDeposit = async () => {
 const getTransactionIconClass = (type: string): string => {
   const iconClasses = {
     deposit: 'bg-green-100 text-green-600',
+    deposit_revenue: 'bg-green-100 text-green-600',
     monthly_correction: 'bg-blue-100 text-blue-600',
   }
   return iconClasses[type as keyof typeof iconClasses] || 'bg-gray-100 text-gray-600'
@@ -402,21 +404,10 @@ const getTransactionIconClass = (type: string): string => {
 const getTransactionAmountClass = (type: string): string => {
   const amountClasses = {
     deposit: 'text-green-600',
+    deposit_revenue: 'text-green-600',
     monthly_correction: 'text-blue-600',
   }
   return amountClasses[type as keyof typeof amountClasses] || 'text-gray-600'
 }
 
-// deposit bonus functions
-const hasDepositBonus = (accountType: Account['account_type']): boolean => {
-  return accountType === 'checking' || accountType === 'investment'
-}
-
-const getDepositBonus = (): number => {
-  return 0.50
-}
-
-const shouldShowDepositBonus = (transaction: Transaction, accountType: Account['account_type']): boolean => {
-  return transaction.transaction_type === 'deposit' && hasDepositBonus(accountType)
-}
 </script>
